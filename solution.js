@@ -1,17 +1,20 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
+import 'dotenv/config'
+
+const password = process.env.db_pwd;
 
 const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: "123456",
+  password: password,
   port: 5432,
 });
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 db.connect();
 
@@ -21,6 +24,7 @@ db.query("SELECT * FROM capitals", (err, res) => {
     console.error("Error executing query", err.stack);
   } else {
     quiz = res.rows;
+    console.log(quiz[0]);
   }
   db.end();
 });
@@ -45,6 +49,7 @@ app.get("/", async (req, res) => {
 app.post("/submit", (req, res) => {
   let answer = req.body.answer.trim();
   let isCorrect = false;
+  console.log(`current capital: ${JSON.stringify(currentQuestion.capital)}`)
   if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
     totalCorrect++;
     console.log(totalCorrect);

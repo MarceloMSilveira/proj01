@@ -22,13 +22,14 @@ let currentQuestion = {};
 app.get("/", async (req, res) => {
   totalCorrect = 0;
   await nextQuestion();
-  console.log(currentQuestion);
+  console.log(`current question: ${JSON.stringify(currentQuestion)}`);
   res.render("index.ejs", { question: currentQuestion });
 });
 
 // POST a new post
 app.post("/submit", (req, res) => {
   let answer = req.body.answer.trim();
+  console.log(`user answer: ${JSON.stringify(req.body)}`)
   let isCorrect = false;
   if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
     totalCorrect++;
@@ -37,6 +38,7 @@ app.post("/submit", (req, res) => {
   }
 
   nextQuestion();
+  console.log(`current question: ${JSON.stringify(currentQuestion)}`);
   res.render("index.ejs", {
     question: currentQuestion,
     wasCorrect: isCorrect,
@@ -46,7 +48,6 @@ app.post("/submit", (req, res) => {
 
 async function nextQuestion() {
   const randomCountry = quiz[Math.floor(Math.random() * quiz.length)];
-
   currentQuestion = randomCountry;
 }
 

@@ -1,5 +1,5 @@
 {
-  "name": "ms1-capstone-proj-use-api",
+  "name": "ms1-postgresql-first-proj",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -20,7 +20,7 @@
     "dev": "",
     "test": ""
   },
-  "description": "A capstone proj using public APIs",
+  "description": "A postgresql database proj ",
   "dependencies": {
     "axios": "^1.8.2",
     "body-parser": "^1.20.3",
