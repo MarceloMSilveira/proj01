@@ -11,6 +11,13 @@ const db = new pg.Client({
   port: 5432,
 });
 
-db.connect();
-db.end();
+
+
+await db.connect();
+
+const result = await db.query('SELECT * FROM capitals');
+console.log(result.rows[0])
+
+
+await db.end();
 

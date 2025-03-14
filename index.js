@@ -1,16 +1,42 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from 'pg'
+import 'dotenv/config'
 
 const app = express();
 const port = 3000;
-const { Client } = pg
+const { Client } = pg;
+let quiz = [];
 
-let quiz = [
-  { country: "France", capital: "Paris" },
-  { country: "United Kingdom", capital: "London" },
-  { country: "United States of America", capital: "New York" },
-];
+const db = new Client ({
+  user: "postgres",
+  host: "localhost",
+  database: "world",
+  password: process.env.db_pwd,
+  port: 5432,
+})
+
+async function tryAcessData() {
+  try {
+    const result = await db.query('SELECT * FROM capitals'); 
+    quiz = result.rows;
+    console.log(`Sucess aquiring all data: ${JSON.stringify(quiz[0])} / got ${quiz.length} registers.`) 
+  } catch (error) {
+    console.error(`Erro ao tentar obter os dados da tabela capitals: ${error.message}`)
+  }
+  await db.end()
+}
+
+await db.connect();
+
+await tryAcessData();
+console.log(`Data returned test: ${JSON.stringify(quiz[1])}`);
+
+// let quiz = [
+//   { country: "France", capital: "Paris" },
+//   { country: "United Kingdom", capital: "London" },
+//   { country: "United States of America", capital: "New York" },
+// ];
 
 let totalCorrect = 0;
 
